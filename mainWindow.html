@@ -1,0 +1,99 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de la Compra</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a class="brand-logo center">Lista de la Compra</a>
+    </div>
+  </nav>
+  <ul></ul>
+  <script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+    const ul = document.querySelector('ul');
+
+    //Aquí capturo el mensaje enviado desde el ipcMain
+    // previamente capturado desde el ipcRenderer de addWindow
+    ipcRenderer.on('item:add', function (e, item) {
+      ul.className = 'collection';
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      const itemText = document.createTextNode(item);
+      const itemPrize = document.createTextNode(prizeGenerator(item)+"€");
+      //Añadir objeto
+      li.className = 'collection-item';
+      span.style='margin-left:3em';
+      li.appendChild(itemText);
+      span.appendChild(itemPrize);
+      li.appendChild(span);
+      ul.appendChild(li);
+      checkTotal();
+    });
+    //Limpiar objetos
+    ipcRenderer.on('item:clear', function () {
+      ul.innerHTML = '';
+      ul.className = '';
+    })
+
+    //Limpiar un objeto
+    ul.addEventListener('dblclick', removeItem);
+    function removeItem(e) {
+      e.target.remove();
+      if (ul.children.length == 0) {
+        ul.className = '';
+      }
+    }
+
+    //Generador de precios
+    function prizeGenerator(item) {
+      let prize=0;
+      let itemFormated = item.toLowerCase();
+      switch (itemFormated) {
+        case 'pan': prize = 1;
+          break;
+        case 'leche': prize = 1.59;
+          break;
+        case 'cerveza': prize = 1.70;
+          break;
+        case 'aceitunas': prize = 2.33;
+          break;
+        case 'cebolla': prize = 0.95;
+          break;
+        case 'patata': prize = 2;
+          break;
+        case 'pimientos': prize = 1.29;
+          break;
+        case 'mango': prize = 3.12;
+          break;
+        case 'papel': prize = 1.70;
+          break;
+        case 'manzana': prize = 0.92;
+          break;
+        case 'platano': prize = 0.65;
+          break;
+        default: prize = "Aún por definir 00.00";
+            break;
+      }
+      return prize;
+    }
+
+    function checkTotal(){
+      let total = document.querySelector("#total").value;
+      let arr_span = document.querySelectorAll('li > span');
+      for(let i = 0; i < arr_span.length; i++)
+      {
+        
+        console.log(arr_span[i].innerHTML);
+      }
+    }
+  </script>
+</body>
+
+</html>

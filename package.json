@@ -1,0 +1,19 @@
+{
+  "name": "myfirstapp",
+  "version": "1.0.0",
+  "description": "Prueba",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^8.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"electron ."
+  },
+  "keywords": [
+    "prueba"
+  ],
+  "author": "pepe rodriguez fdz",
+  "license": "UNLICENSED"
+}
